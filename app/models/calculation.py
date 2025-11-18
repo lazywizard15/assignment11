@@ -30,7 +30,7 @@ from sqlalchemy.orm import relationship, declared_attr
 from app.database import Base
 
 
-class AbstractCalculation:
+class AbstractCalculation(object):
     """
     Abstract base class defining common attributes for all calculations.
     
@@ -41,7 +41,12 @@ class AbstractCalculation:
     Design Pattern: This follows the Template Method pattern, where the
     abstract class defines the structure and subclasses provide specific
     implementations.
+
     """
+    
+    __abstract__ = True  # <-- ADD THIS LINE__abstract__ = True  # <-- ADD THIS LINE
+    
+    
     def __init__(self, **kwargs):
         """
         Custom constructor to ensure arguments (like inputs) are passed 
