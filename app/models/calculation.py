@@ -42,6 +42,14 @@ class AbstractCalculation:
     abstract class defines the structure and subclasses provide specific
     implementations.
     """
+    def __init__(self, **kwargs):
+        """
+        Custom constructor to ensure arguments (like inputs) are passed 
+        correctly to the SQLAlchemy declarative constructor.
+        """
+        # Call the base class constructor (which handles column assignment)
+        super().__init__(**kwargs)
+    # ----------------------------
 
     @declared_attr
     def __tablename__(cls):
