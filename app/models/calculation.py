@@ -46,6 +46,7 @@ class AbstractCalculation(object):
     
     __abstract__ = True  # <-- ADD THIS LINE__abstract__ = True  # <-- ADD THIS LINE
     
+    __table_args__ = {'extend_existing': True}
     
     def __init__(self, **kwargs):
         super(AbstractCalculation, self).__init__(**kwargs)
