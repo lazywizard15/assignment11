@@ -48,13 +48,41 @@ class AbstractCalculation(object):
     
     
     def __init__(self, **kwargs):
-        """
-        Custom constructor to ensure arguments (like inputs) are passed 
-        correctly to the SQLAlchemy declarative constructor.
-        """
-        # Call the base class constructor (which handles column assignment)
-        super().__init__(**kwargs)
-    # ----------------------------
+        super(AbstractCalculation, self).__init__(**kwargs)
+
+    @declared_attr.cascading # <-- CHANGE: Apply cascading here
+    def __tablename__(cls):
+        return 'calculations'
+
+    @declared_attr.cascading # <-- CHANGE: Apply cascading here
+    def id(cls):
+        return Column(
+            UUID(as_uuid=True),
+            primary_key=True,
+            default=uuid.uuid4,
+            nullable=False
+        )
+    
+    # ... apply @declared_attr.cascading to all Column definitions below this point,
+    # including user_id, type, inputs, result, created_at, updated_at
+    
+    @declared_attr.cascading # <-- CHANGE: Apply cascading to 'inputs'
+    def inputs(cls):
+        return Column(
+            JSON,
+            nullable=False
+        )
+
+    # ... Ensure 'user' relationship is also present and correctly declared ...
+    @declared_attr.cascading # <-- Apply cascading to relationships too
+    def user(cls):
+        return relationship("User", back_populates="calculations")
+
+# The Calculation base class and subclasses remain the same:
+# class Calculation(Base, AbstractCalculation):
+#    ...
+# class Addition(Calculation):
+#    ...
 
     @declared_attr
     def __tablename__(cls):
